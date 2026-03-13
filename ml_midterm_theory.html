@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Into ML - Theory Review</title>
+  <title>Intro ML - Theory Review</title>
   <style>
     :root { --paper:#fbf6eb; --card:#fffdf8; --ink:#1f2933; --muted:#58646f; --teal:#0f766e; --rust:#b45309; --line:#decfb4; --shadow:0 14px 34px rgba(31,41,51,.08); }
     * { box-sizing: border-box; }
@@ -27,21 +27,23 @@
     .tag { padding:8px 12px; border-radius:999px; background:#f2ead6; border:1px solid var(--line); font-size:.95rem; }
     ul { margin:8px 0 0 18px; line-height:1.6; }
     li { margin:4px 0; }
-    .formula { padding:12px 14px; border-radius:14px; border:1px solid var(--line); background:#faf3e4; overflow:auto; font-family:"Courier New", monospace; white-space:pre-wrap; }
+    .formula { padding:12px 14px; border-radius:14px; border:1px solid var(--line); background:#faf3e4; overflow:auto; font-family:"Courier New", monospace; white-space:pre-wrap; font-size:1.05rem; }
     .callout { padding:14px 16px; border-left:5px solid var(--rust); background:#fff6e8; border-radius:12px; margin-top:14px; }
     .mini { color:var(--muted); font-size:.95rem; }
+    .explain { line-height:1.65; margin:10px 0 14px; color:#2d3748; }
+    .footer { text-align:center; color:var(--muted); font-size:.92rem; margin-top:28px; }
     @media (max-width: 720px) { .navcard { align-items:flex-start; } }
   </style>
 </head>
 <body>
   <div class="wrap">
     <section class="hero">
-      <h1>Into ML - Theory Review</h1>
-      <p class="lead">This page is the study-first companion to your practice exam. It focuses on the theory, definitions, formulas, distinctions, and lecture-specific ideas most likely to show up as multiple-choice questions.</p>
+      <h1>Intro ML &#8212; Theory Review</h1>
+      <p class="lead">A comprehensive study companion covering core theory, definitions, formulas with proper notation, and key distinctions across Modules 1&#8211;8. Read this first, then test yourself with the practice exam.</p>
       <div class="tagrow">
-        <div class="tag">Modules 1-8</div>
+        <div class="tag">Modules 1&#8211;8</div>
         <div class="tag">Lecture-based emphasis</div>
-        <div class="tag">Formula reminders</div>
+        <div class="tag">Formula reference</div>
         <div class="tag">Exam traps called out</div>
       </div>
     </section>
@@ -53,183 +55,278 @@
       </div>
       <div class="navlinks">
         <a class="btn" href="./ml_midterm_practice_exam.html">Open Practice Exam</a>
-        <a class="btn alt" href="./index.html">Open Home Page</a>
+        <a class="btn alt" href="./index.html">Home</a>
       </div>
     </section>
 
+    <!-- MODULE 1 -->
     <section class="section">
       <h2>Module 1: Core Concepts</h2>
-      <h3>Mitchell definition</h3>
-      <div class="formula">A program learns from experience E with respect to task T and performance measure P if its performance at T, as measured by P, improves with E.</div>
+      <p class="explain">Machine learning is about building systems that improve their performance on a task through experience, rather than being explicitly programmed for every scenario. Tom Mitchell's 1997 definition formalizes this: a program <em>learns</em> if it gets measurably better at some task as it sees more data. The three pillars of this definition are the task <strong>T</strong>, the experience <strong>E</strong>, and the performance measure <strong>P</strong>. Note that a specific model or hypothesis class <strong>H</strong> is something we choose when we design the system &#8212; it is not part of the formal definition itself.</p>
+      <p class="explain">ML is broadly split into <strong>supervised learning</strong> (labeled input&#8211;output pairs), <strong>unsupervised learning</strong> (no labels &#8212; the algorithm finds structure on its own), and <strong>reinforcement learning</strong> (an agent learns by receiving rewards or penalties). Within supervised learning, there's a further distinction between <strong>batch learning</strong> (train on the entire dataset at once) and <strong>online learning</strong> (update incrementally as new data arrives). Similarly, <strong>model-based learning</strong> fits explicit parameters (like regression coefficients), while <strong>instance-based learning</strong> stores training examples and makes predictions by comparing new inputs to stored ones (like k-NN).</p>
+
+      <h3>Mitchell's Definition</h3>
+      <div class="formula">A program learns from experience E with respect to task T
+and performance measure P if its performance at T,
+as measured by P, improves with E.</div>
       <ul>
-        <li>`T`, `E`, and `P` are required in the definition.</li>
-        <li>A particular model `H` is not required by the definition itself.</li>
-        <li>Supervised learning uses labeled data; unsupervised learning uses unlabeled data.</li>
-        <li>Online learning updates incrementally; batch learning trains on the full available set.</li>
-        <li>Model-based learning fits parameters; instance-based learning compares to stored examples.</li>
+        <li><strong>T</strong> (task), <strong>E</strong> (experience), and <strong>P</strong> (performance measure) are required.</li>
+        <li>A particular model <strong>H</strong> is <em>not</em> required by the definition itself.</li>
+        <li>Supervised &#8594; labeled data; Unsupervised &#8594; unlabeled data.</li>
+        <li>Online learning updates incrementally; batch learning trains on the full dataset.</li>
+        <li>Model-based &#8594; fits parameters; Instance-based &#8594; compares to stored examples (e.g., k-NN).</li>
       </ul>
-      <div class="callout">Most likely trap: �Which item is not required in the definition of machine learning?� The answer is usually `Model H`.</div>
+      <div class="callout">&#9888; <strong>Exam trap:</strong> &#8220;Which item is NOT required in the definition of machine learning?&#8221; The answer is usually <strong>Model H</strong>.</div>
     </section>
 
+    <!-- MODULE 2 -->
     <section class="section">
       <h2>Module 2: Linear Regression</h2>
-      <h3>Core model</h3>
-      <div class="formula">y-hat = w0 + w1x1 + ... + wnxn</div>
-      <h3>Key formulas</h3>
-      <div class="formula">MSE = (1/m) * Sum[(y-hat(i) - y(i))^2]
-Normal equation: w = (X^T X)^(-1) X^T y
-Single-sample GD update: wj <- wj - alpha * 2(y-hat - y)xj</div>
+      <p class="explain">Linear regression models the relationship between input features and a continuous target by fitting a linear function. Given features x&#8321;, x&#8322;, &#8230;, x&#8345;, the model predicts &#375; = w&#8320; + w&#8321;x&#8321; + &#8230; + w&#8345;x&#8345;. The weights <strong>w</strong> are chosen to minimize a cost function, most commonly the <strong>Mean Squared Error (MSE)</strong>. Unlike most ML models, linear regression has a <strong>closed-form solution</strong> called the <em>normal equation</em>, which directly computes the optimal weights in one step by solving <strong>w</strong> = (X&#7488;X)&#8315;&#185;X&#7488;y. This works well for small datasets but becomes expensive for large ones because of the matrix inversion.</p>
+      <p class="explain">When the normal equation is too costly, we use <strong>gradient descent (GD)</strong> &#8212; an iterative optimization method that adjusts weights in the direction that reduces the cost. The learning rate &#945; controls step size: too small and convergence is painfully slow, too large and the algorithm oscillates or diverges. <strong>Batch GD</strong> uses all training examples per update, <strong>Stochastic GD (SGD)</strong> uses one example per update (noisier but faster), and <strong>Mini-batch GD</strong> is the practical middle ground. <strong>Regularization</strong> adds a penalty to large weights: <strong>Ridge</strong> (L2) shrinks all coefficients toward zero but rarely zeroes them out, while <strong>Lasso</strong> (L1) can drive some coefficients exactly to zero, performing implicit feature selection.</p>
+
+      <h3>Core Model</h3>
+      <div class="formula">&#375; = w&#8320; + w&#8321;x&#8321; + w&#8322;x&#8322; + &#8230; + w&#8345;x&#8345;</div>
+
+      <h3>Key Formulas</h3>
+      <div class="formula">MSE = (1/m) &#8721;&#7522; (&#375;&#8311; &#8722; y&#8311;)&#178;
+
+Normal Equation:  <strong>w</strong> = (X&#7488;X)&#8315;&#185; X&#7488;y
+
+SGD weight update:  w&#11388; &#8592; w&#11388; &#8722; &#945; &#183; 2(&#375; &#8722; y) &#183; x&#11388;
+
+Ridge (L2):  J(w) = MSE + &#955; &#8721; w&#11388;&#178;
+
+Lasso (L1):  J(w) = MSE + &#955; &#8721; |w&#11388;|</div>
       <ul>
-        <li>Linear regression has a closed-form solution; logistic regression does not.</li>
-        <li>If learning rate is too large, GD may oscillate or diverge.</li>
-        <li>Lasso can drive coefficients to zero; Ridge usually shrinks them without zeroing them.</li>
-        <li>MAE is more robust to outliers than MSE/RMSE.</li>
+        <li>Linear regression has a closed-form solution; logistic regression does <em>not</em>.</li>
+        <li>If &#945; is too large, GD may oscillate or diverge instead of converging.</li>
+        <li><strong>Lasso (L1)</strong> can drive coefficients to exactly zero &#8594; feature selection.</li>
+        <li><strong>Ridge (L2)</strong> shrinks coefficients but rarely zeros them out.</li>
+        <li><strong>MAE</strong> is more robust to outliers than MSE/RMSE because it grows linearly with error.</li>
+        <li><strong>Basis functions</strong> (e.g., x&#178;, sin(x)) transform inputs into new features &#8212; the model remains linear in the parameters.</li>
       </ul>
-      <div class="callout">Most likely trap: more training iterations do not automatically solve overfitting.</div>
+      <div class="callout">&#9888; <strong>Exam trap:</strong> More training iterations do <em>not</em> automatically solve overfitting. They can actually make it worse.</div>
     </section>
 
+    <!-- MODULE 3 -->
     <section class="grid">
       <section class="section">
         <h2>Module 3: Logistic Regression</h2>
-        <div class="formula">P(y=1|x) = sigma(w^T x)
-sigma(x) = 1 / (1 + e^(-x))
-sigma'(x) = sigma(x)(1 - sigma(x))</div>
+        <p class="explain">Logistic regression is a <strong>classification</strong> model, despite the name. It models the probability that an input belongs to class 1 by passing a linear combination of features through the <strong>sigmoid function</strong> &#963;(z) = 1/(1 + e&#8315;&#7825;). The output is always between 0 and 1, making it interpretable as a probability. The model is trained by minimizing <strong>cross-entropy loss</strong> (also called log loss), which penalizes confident wrong predictions heavily. A key advantage: with cross-entropy, the optimization landscape is <strong>convex</strong>, so gradient descent can find the global optimum. Unlike linear regression, there is <em>no</em> closed-form normal equation solution.</p>
+
+        <h3>Formulas</h3>
+        <div class="formula">P(y=1|x) = &#963;(<strong>w</strong>&#7488;x)
+
+&#963;(z) = 1 / (1 + e&#8315;&#7825;)
+
+&#963;&#8242;(z) = &#963;(z) &#183; (1 &#8722; &#963;(z))
+
+Cross-entropy loss:
+L = &#8722;[y log(&#375;) + (1&#8722;y) log(1&#8722;&#375;)]</div>
         <ul>
-          <li>Binary classification model that predicts a probability-like output.</li>
-          <li>Standard loss is cross-entropy / log loss.</li>
-          <li>With cross-entropy, the optimization is convex in the standard setup.</li>
-          <li>No normal-equation-style closed-form solution.</li>
+          <li>Binary classification &#8594; outputs a probability between 0 and 1.</li>
+          <li>Cost function: <strong>cross-entropy / log loss</strong> (not MSE).</li>
+          <li>Optimization is <strong>convex</strong> &#8594; GD reaches the global optimum.</li>
+          <li><em>No</em> closed-form (normal equation) solution exists.</li>
+          <li>Multiclass extension: <strong>softmax regression</strong> or <strong>one-vs-rest</strong>.</li>
         </ul>
       </section>
+
       <section class="section">
-        <h2>Module 3: Evaluation</h2>
+        <h2>Module 3: Evaluation Metrics</h2>
+        <p class="explain">Once a classifier is trained, we need to measure how well it actually works. <strong>Accuracy</strong> is the simplest metric but can be dangerously misleading on imbalanced datasets (e.g., 99% negative class &#8594; always predicting negative gives 99% accuracy). <strong>Precision</strong> tells you how reliable your positive predictions are, while <strong>Recall</strong> tells you how many actual positives you caught. The <strong>F1 score</strong> is the harmonic mean of precision and recall &#8212; useful when you need a single balanced metric. The <strong>ROC curve</strong> plots True Positive Rate vs. False Positive Rate at all thresholds; a curve hugging the top-left corner is ideal, while one near the diagonal is no better than random guessing.</p>
+
+        <h3>Formulas</h3>
         <div class="formula">Precision = TP / (TP + FP)
-Recall = TP / (TP + FN)
-F1 = 2TP / (2TP + FP + FN)
-TPR = TP / (TP + FN)
-FPR = FP / (FP + TN)</div>
+Recall    = TP / (TP + FN)
+F1        = 2TP / (2TP + FP + FN)
+
+TPR (Sensitivity) = TP / (TP + FN)
+FPR               = FP / (FP + TN)
+Specificity       = TN / (TN + FP)</div>
         <ul>
-          <li>ROC plots TPR vs FPR.</li>
-          <li>ROC close to the diagonal means weak or random-like performance.</li>
-          <li>Accuracy can be misleading on imbalanced datasets.</li>
-          <li>One-vs-rest is a standard multiclass extension.</li>
+          <li><strong>ROC curve</strong> plots TPR (y-axis) vs FPR (x-axis).</li>
+          <li>ROC near the diagonal &#8594; random-guess-level performance.</li>
+          <li>Accuracy is misleading on <strong>imbalanced datasets</strong>.</li>
+          <li><strong>One-vs-rest (OvR)</strong> is a standard multiclass extension.</li>
         </ul>
       </section>
     </section>
 
+    <!-- MODULE 4 -->
     <section class="section">
       <h2>Module 4: Decision Trees</h2>
+      <p class="explain">Decision trees are <strong>hierarchical, rule-based models</strong> that recursively split the data on feature values to create regions that are as pure (homogeneous) as possible. At each internal node, the algorithm picks the feature and threshold that best separates the data according to some impurity measure. <strong>ID3</strong> uses <strong>information gain</strong> (based on entropy) to choose splits, while <strong>CART</strong> uses <strong>Gini impurity</strong>. Training is <strong>greedy</strong> &#8212; each split is locally optimal, but there is no guarantee the overall tree structure is globally optimal.</p>
+      <p class="explain">Trees are used for both <strong>classification</strong> (discrete targets) and <strong>regression</strong> (continuous targets). A fully-grown tree will memorize the training data (overfit), so we use <strong>pruning</strong> to cut back branches that don't improve generalization. <strong>Reduced error pruning</strong> removes subtrees and checks if validation performance improves. <strong>Chi-squared pruning</strong> tests whether a split is statistically significant. Entropy of 0 means a node is perfectly pure (all one class), while maximum entropy means the classes are evenly mixed.</p>
+
+      <h3>Formulas</h3>
+      <div class="formula">Entropy(S) = &#8722; &#8721;&#7522; p&#7522; log&#8322;(p&#7522;)
+
+Information Gain:
+IG(S, A) = Entropy(S) &#8722; &#8721;&#7525; (|S&#7525;| / |S|) &#183; Entropy(S&#7525;)
+
+Gini Impurity = 1 &#8722; &#8721;&#8342; p&#8342;&#178;
+
+Binary Gini   = 1 &#8722; p&#178; &#8722; (1&#8722;p)&#178; = 2p(1&#8722;p)</div>
       <ul>
-        <li>Trees are hierarchical rule structures.</li>
-        <li>Classification tree: discrete targets. Regression tree: continuous targets.</li>
-        <li>Training is greedy.</li>
-        <li>ID3 uses information gain.</li>
-        <li>CART uses Gini impurity.</li>
+        <li><strong>ID3</strong> &#8594; information gain (entropy-based); <strong>CART</strong> &#8594; Gini impurity.</li>
+        <li>Training is <strong>greedy</strong> &#8212; not guaranteed to find the globally optimal tree.</li>
+        <li>Entropy = 0 &#8594; perfectly pure node; Entropy = 1 (binary) &#8594; maximum impurity.</li>
+        <li><strong>Reduced error pruning</strong> uses a validation set to decide whether to remove subtrees.</li>
+        <li><strong>Chi-squared pruning</strong> tests whether splits are statistically significant.</li>
+        <li>Trees work for <em>both</em> classification and regression.</li>
       </ul>
-      <div class="formula">Entropy(S) = - Sum[p_i log2 p_i]
-IG(S,A) = Entropy(S) - Sum_v (|S_v|/|S|) Entropy(S_v)
-Gini = 1 - Sum[p_k^2]</div>
-      <ul>
-        <li>Reduced error pruning uses validation performance.</li>
-        <li>Chi-squared pruning tests whether a split is statistically meaningful.</li>
-      </ul>
-      <div class="callout">Most likely trap: decision trees are not only for classification. They are also used for regression.</div>
+      <div class="callout">&#9888; <strong>Exam trap:</strong> Decision trees are NOT only for classification. They are also used for regression (regression trees predict continuous values).</div>
     </section>
 
+    <!-- MODULE 5 -->
     <section class="grid">
       <section class="section">
-        <h2>Module 5: Bias, Variance, Cross-Validation</h2>
-        <div class="formula">Expected test error � Bias^2 + Variance + irreducible noise</div>
+        <h2>Module 5: Bias, Variance &amp; Cross-Validation</h2>
+        <p class="explain">Every model's prediction error can be decomposed into three components: <strong>bias</strong> (systematic error from wrong assumptions &#8212; the model is too simple), <strong>variance</strong> (sensitivity to fluctuations in the training set &#8212; the model is too complex), and <strong>irreducible noise</strong> (inherent randomness in the data). This is the <strong>bias-variance tradeoff</strong>: as model complexity increases, bias decreases but variance increases. The sweet spot is where total error is minimized. <strong>K-fold cross-validation</strong> helps find this sweet spot by repeatedly splitting the data into K folds, training on K&#8722;1 folds and validating on the remaining one. After selecting the best hyperparameters, you retrain on <em>all</em> training data and test once on the held-out test set.</p>
+
+        <h3>Decomposition</h3>
+        <div class="formula">Expected Error &#8776; Bias&#178; + Variance + Irreducible Noise</div>
         <ul>
-          <li>High bias means underfitting.</li>
-          <li>High variance means overfitting.</li>
-          <li>K-fold cross-validation is used for model and hyperparameter selection.</li>
-          <li>After tuning, retrain on all training data and test once on the held-out test set.</li>
+          <li><strong>High bias</strong> &#8594; underfitting (model too simple).</li>
+          <li><strong>High variance</strong> &#8594; overfitting (model too complex).</li>
+          <li><strong>K-fold CV</strong> is used for model selection and hyperparameter tuning.</li>
+          <li>After tuning: retrain on <em>all</em> training data, then test once on the held-out test set.</li>
         </ul>
       </section>
+
       <section class="section">
-        <h2>Module 5: Ensembles</h2>
+        <h2>Module 5: Ensemble Methods</h2>
+        <p class="explain">Ensemble methods combine multiple weak learners to build a stronger predictor. <strong>Bagging</strong> (bootstrap aggregating) trains multiple models on random subsets sampled <em>with replacement</em>, then averages their predictions. This reduces <strong>variance</strong> and is especially effective for unstable learners like decision trees (Random Forest is bagging + random feature subsets). <strong>Pasting</strong> is the same idea but samples <em>without replacement</em>. <strong>Boosting</strong> works sequentially: each new model focuses on the mistakes of the previous ones, gradually reducing bias. <strong>Stacking</strong> trains a meta-model (blender) to learn how to combine the outputs of several base learners optimally.</p>
+
         <ul>
-          <li>Bagging: sampling with replacement.</li>
-          <li>Pasting: sampling without replacement.</li>
-          <li>Boosting: sequentially corrects earlier mistakes.</li>
-          <li>Stacking: uses a separate learned model to combine base learners.</li>
-          <li>Bagging helps reduce variance for unstable learners like trees.</li>
+          <li><strong>Bagging:</strong> sampling <em>with</em> replacement &#8594; reduces variance.</li>
+          <li><strong>Pasting:</strong> sampling <em>without</em> replacement.</li>
+          <li><strong>Boosting:</strong> sequential &#8594; each learner corrects earlier mistakes.</li>
+          <li><strong>Stacking:</strong> a meta-model learns to combine base learner outputs.</li>
+          <li>Bagging is most helpful for <strong>unstable learners</strong> (e.g., decision trees).</li>
         </ul>
       </section>
     </section>
 
+    <!-- MODULE 6 -->
     <section class="grid">
       <section class="section">
-        <h2>Module 6: SVM</h2>
+        <h2>Module 6: Support Vector Machines</h2>
+        <p class="explain">SVMs find the <strong>optimal separating hyperplane</strong> that maximizes the margin between classes. The <strong>margin</strong> is the distance between the decision boundary and the nearest data points from each class &#8212; these nearest points are called <strong>support vectors</strong>. A larger margin typically leads to better generalization. For data that isn't linearly separable, the <strong>kernel trick</strong> maps inputs into a higher-dimensional space where a linear separator can be found, without explicitly computing the transformation. Common kernels include polynomial and RBF (Gaussian). The hyperparameter <strong>C</strong> controls the tradeoff: large C penalizes violations heavily (tighter margin, risk of overfitting), small C allows more violations (wider margin, more regularization).</p>
+
+        <h3>Key Concepts</h3>
+        <div class="formula">Objective: maximize margin = 2 / &#8214;<strong>w</strong>&#8214;
+subject to: y&#7522;(<strong>w</strong>&#7488;x&#7522; + b) &#8805; 1
+
+Kernel trick:  K(x&#7522;, x&#11388;) = &#966;(x&#7522;) &#183; &#966;(x&#11388;)
+&#8594; compute dot product in high-dim space without explicit mapping</div>
         <ul>
-          <li>SVM finds an optimal separating hyperplane with maximum margin.</li>
-          <li>Support vectors are the points nearest the boundary.</li>
-          <li>Kernel functions allow nonlinear separation.</li>
-          <li>The lecture emphasizes quadratic optimization and the avoidance of poor local minima.</li>
-          <li>SVR is the regression version of SVM.</li>
+          <li><strong>Support vectors</strong> are the points nearest the decision boundary.</li>
+          <li><strong>Kernel functions</strong> enable nonlinear separation (polynomial, RBF, etc.).</li>
+          <li>SVM optimization is <strong>quadratic</strong> &#8594; avoids poor local minima.</li>
+          <li>Large <strong>C</strong> &#8594; penalizes violations heavily &#8594; tighter margin, higher variance.</li>
+          <li>Small <strong>C</strong> &#8594; allows more violations &#8594; wider margin, more regularization.</li>
+          <li><strong>SVR</strong> (Support Vector Regression) adapts SVM for continuous targets.</li>
         </ul>
       </section>
+
       <section class="section">
         <h2>Module 7: Bayesian Learning</h2>
-        <div class="formula">P(A|B) = P(B|A)P(A) / P(B)</div>
+        <p class="explain"><strong>Bayes' theorem</strong> is the foundation: it lets us update our belief about a hypothesis after observing evidence. P(h|D) is the <strong>posterior</strong> probability of hypothesis h given data D; P(D|h) is the <strong>likelihood</strong>; P(h) is the <strong>prior</strong>. The <strong>MAP (Maximum A Posteriori)</strong> approach picks the single hypothesis with the highest posterior probability. The <strong>Bayes optimal classifier</strong> goes further &#8212; it considers <em>all</em> hypotheses, weighted by their posterior probabilities, making it the best possible classifier (but often intractable). <strong>Naive Bayes</strong> makes the simplifying assumption that all features are conditionally independent given the class, which makes computation tractable and works surprisingly well in practice. The <strong>Gibbs algorithm</strong> randomly selects a hypothesis according to the posterior distribution; its expected error is at most twice that of the Bayes optimal classifier.</p>
+
+        <h3>Bayes' Theorem</h3>
+        <div class="formula">P(h|D) = P(D|h) &#183; P(h) / P(D)
+
+MAP:  h&#7580;&#7428;&#7432; = argmax&#8341; P(D|h) &#183; P(h)
+
+If P(A|B) = P(A), then A &#8869; B (independent):
+&#8594; P(A &#8745; B) = P(A) &#183; P(B)
+
+Naive Bayes assumption:
+P(x&#8321;, x&#8322;, &#8230;, x&#8345; | C) = &#8719;&#7522; P(x&#7522; | C)</div>
         <ul>
-          <li>If P(A|B) = P(A), then A and B are independent and P(AB) = P(A)P(B).</li>
-          <li>MAP picks the hypothesis with highest posterior probability.</li>
-          <li>Bayes optimal classifier uses all hypotheses weighted by posterior probability.</li>
-          <li>Naive Bayes assumes conditional independence given the class.</li>
-          <li>Gibbs is worth memorizing as a separate algorithm with its expected-error guarantee.</li>
+          <li>If P(A|B) = P(A), then A and B are <strong>independent</strong> &#8594; P(A&#8745;B) = P(A)&#183;P(B).</li>
+          <li><strong>MAP</strong> picks the hypothesis with highest posterior probability.</li>
+          <li><strong>Bayes optimal</strong> uses all hypotheses weighted by posterior &#8594; best possible.</li>
+          <li><strong>Naive Bayes</strong> assumes features are conditionally independent given class.</li>
+          <li><strong>Gibbs algorithm:</strong> expected error &#8804; 2 &#215; (Bayes optimal error).</li>
+          <li><strong>EM algorithm</strong> is useful when there <em>are</em> hidden/latent variables (not when there aren't).</li>
+          <li><strong>Bayesian belief network:</strong> a directed acyclic graph (DAG) representing conditional dependencies.</li>
         </ul>
       </section>
     </section>
 
+    <!-- MODULE 8 -->
     <section class="section">
       <h2>Module 8: Neural Networks</h2>
+      <p class="explain">Neural networks are composed of layers of interconnected nodes (neurons). The simplest form is the <strong>perceptron</strong> &#8212; a single-layer model that can only learn linearly separable patterns (it famously fails on <strong>XOR</strong>). Adding hidden layers creates a <strong>multilayer perceptron (MLP)</strong>, which can represent much more complex functions. The universal approximation theorem says that with enough neurons in a single hidden layer, an MLP can approximate any continuous function &#8212; and with at most <strong>two hidden layers</strong>, it can represent any Boolean or continuous target function.</p>
+      <p class="explain">Training uses <strong>backpropagation</strong>, which efficiently computes gradients by applying the <strong>chain rule</strong> backward through the network. The <strong>sigmoid</strong> activation &#963;(z) = 1/(1+e&#8315;&#7825;) was historically popular because it's smooth and differentiable, with the elegant derivative &#963;&#8242;(z) = &#963;(z)(1&#8722;&#963;(z)). For binary classification output layers, sigmoid is typical; for multiclass, <strong>softmax</strong> is used to produce a probability distribution. Regression networks and classification networks use <strong>different loss functions</strong> (e.g., MSE for regression, cross-entropy for classification). Small initial weights are preferred with sigmoid to avoid saturating in flat regions where gradients vanish.</p>
+
+      <h3>Sigmoid Activation</h3>
+      <div class="formula">&#963;(z) = 1 / (1 + e&#8315;&#7825;)
+
+&#963;&#8242;(z) = &#963;(z) &#183; (1 &#8722; &#963;(z))
+
+Softmax (multiclass):
+P(class k) = e&#7825;&#8342; / &#8721;&#11388; e&#7825;&#11388;</div>
+
+      <h3>Backpropagation (Chain Rule)</h3>
+      <div class="formula">&#8706;L/&#8706;w&#7522;&#11388; = &#8706;L/&#8706;a&#11388; &#183; &#8706;a&#11388;/&#8706;z&#11388; &#183; &#8706;z&#11388;/&#8706;w&#7522;&#11388;
+
+where z = &#8721; w&#7522;x&#7522; + b,  a = &#963;(z)</div>
       <ul>
-        <li>Perceptron is the classic single-layer neural model.</li>
-        <li>Backpropagation is the standard multilayer training method.</li>
-        <li>Sigmoid is a smooth differentiable threshold-like activation.</li>
-        <li>Binary classification often uses sigmoid; multiclass often uses softmax.</li>
-        <li>Regression and classification networks usually use different loss functions.</li>
-        <li>A single-layer perceptron cannot solve XOR.</li>
+        <li><strong>Perceptron:</strong> single-layer &#8594; can only classify linearly separable data.</li>
+        <li>A single-layer perceptron <strong>cannot solve XOR</strong>.</li>
+        <li><strong>Backpropagation</strong> = chain rule applied backward through layers.</li>
+        <li>Sigmoid derivative: &#963;&#8242;(z) = &#963;(z)(1 &#8722; &#963;(z)).</li>
+        <li>Binary classification output &#8594; sigmoid; Multiclass &#8594; softmax.</li>
+        <li>Regression and classification networks use <strong>different cost functions</strong>.</li>
+        <li>Small initial weights are preferred with sigmoid to avoid vanishing gradients.</li>
+        <li>At most <strong>two hidden layers</strong> can represent any Boolean or continuous function.</li>
       </ul>
-      <div class="formula">g(x) = 1 / (1 + e^(-x))
-g'(x) = g(x)(1 - g(x))</div>
-      <div class="callout">Most likely trap: �Which statement about sigmoid is NOT true?� In your quiz set, the correct answer was �None of the above� because all listed statements were true.</div>
+      <div class="callout">&#9888; <strong>Exam trap:</strong> &#8220;Which statement about sigmoid is NOT true?&#8221; &#8212; The answer was &#8220;None of the above&#8221; because all listed statements were true.</div>
     </section>
 
+    <!-- CRAM CHECKLIST -->
     <section class="section">
       <h2>Fast Cram Checklist</h2>
       <div class="grid">
         <div>
           <h3>Know cold</h3>
           <ul>
-            <li>MSE, normal equation, sigmoid derivative</li>
-            <li>precision, recall, F1, TPR, FPR</li>
-            <li>entropy, information gain, Gini</li>
-            <li>Bayes theorem and independence</li>
+            <li>MSE, normal equation, &#963;&#8242;(z) = &#963;(z)(1&#8722;&#963;(z))</li>
+            <li>Precision, Recall, F1, TPR, FPR</li>
+            <li>Entropy, information gain, Gini impurity</li>
+            <li>Bayes' theorem &amp; independence condition</li>
+            <li>Bias&#178; + Variance + Noise decomposition</li>
           </ul>
         </div>
         <div>
           <h3>Common comparisons</h3>
           <ul>
-            <li>linear vs logistic regression</li>
-            <li>bagging vs pasting vs boosting vs stacking</li>
-            <li>bias vs variance</li>
-            <li>ID3 vs CART</li>
+            <li>Linear regression vs. logistic regression</li>
+            <li>Bagging vs. pasting vs. boosting vs. stacking</li>
+            <li>Bias vs. variance</li>
+            <li>ID3 (info gain) vs. CART (Gini)</li>
+            <li>Ridge (L2) vs. Lasso (L1)</li>
           </ul>
         </div>
         <div>
           <h3>Likely traps</h3>
           <ul>
-            <li>accuracy on imbalanced data</li>
-            <li>decision trees only for classification</li>
-            <li>logistic regression normal equation</li>
-            <li>more iterations always fix overfitting</li>
+            <li>Accuracy on imbalanced data</li>
+            <li>&#8220;Decision trees are only for classification&#8221;</li>
+            <li>&#8220;Logistic regression has a normal equation&#8221;</li>
+            <li>&#8220;More iterations always fix overfitting&#8221;</li>
+            <li>&#8220;EM is useful only without hidden variables&#8221;</li>
           </ul>
         </div>
       </div>
     </section>
+
+    <p class="footer">Created by Nicholas Tavares</p>
   </div>
 </body>
 </html>
