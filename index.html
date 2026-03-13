@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Into ML Study</title>
+  <style>
+    :root { --bg:#f3ecdd; --card:#fffaf1; --ink:#1f2933; --muted:#5a6670; --teal:#0f766e; --orange:#c2410c; --line:#dcccb1; --shadow:0 14px 34px rgba(31,41,51,.08); }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: Georgia, "Times New Roman", serif; color:var(--ink); background:linear-gradient(180deg,#f9f5ec 0%, #eee1c8 100%); }
+    .wrap { max-width: 1100px; margin:0 auto; padding: 32px 18px 56px; }
+    .hero, .card { background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); }
+    .hero { padding:32px; margin-bottom:18px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+    .card { padding:22px; }
+    h1,h2,h3 { margin:0 0 10px; line-height:1.12; }
+    h1 { font-size:clamp(2.1rem, 4vw, 3.4rem); letter-spacing:-.03em; }
+    p { line-height:1.6; }
+    .lead { color:var(--muted); max-width:860px; }
+    .btnrow { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+    a.btn { text-decoration:none; color:white; background:var(--teal); border-radius:999px; padding:11px 15px; display:inline-block; }
+    a.btn.alt { background:var(--orange); }
+    ol, ul { line-height:1.6; margin:10px 0 0 20px; }
+    .mini { color:var(--muted); font-size:.95rem; }
+    code { background:#f4ead7; padding:2px 6px; border-radius:8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Into ML Study</h1>
+      <p class="lead">This mini site bundles your interactive practice exam and theory review into a simple static website you can share online for free.</p>
+      <div class="btnrow">
+        <a class="btn" href="./ml_midterm_theory.html">Study Theory Page</a>
+        <a class="btn alt" href="./ml_midterm_practice_exam.html">Take Practice Exam</a>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>What�s Here</h2>
+        <ul>
+          <li>A theory-first review page for Modules 1-8</li>
+          <li>An interactive multiple-choice practice exam with grading</li>
+          <li>Lecture-based additions from the PDFs you provided</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Free Sharing Options</h2>
+        <ol>
+          <li>GitHub Pages: upload these files to a GitHub repo and enable Pages.</li>
+          <li>Netlify Drop: drag this folder into Netlify Drop for a fast public link.</li>
+          <li>Cloudflare Pages: connect a repo and deploy as a static site.</li>
+        </ol>
+        <p class="mini">For the easiest no-code route, Netlify Drop is usually the fastest. For a longer-term link, GitHub Pages is great.</p>
+      </section>
+
+      <section class="card">
+        <h2>Files To Share</h2>
+        <ul>
+          <li><code>index.html</code></li>
+          <li><code>ml_midterm_theory.html</code></li>
+          <li><code>ml_midterm_practice_exam.html</code></li>
+        </ul>
+        <p class="mini">Because this is a static site, there�s no server cost and no backend needed.</p>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Into ML - Theory Review</title>
+  <style>
+    :root { --paper:#fbf6eb; --card:#fffdf8; --ink:#1f2933; --muted:#58646f; --teal:#0f766e; --rust:#b45309; --line:#decfb4; --shadow:0 14px 34px rgba(31,41,51,.08); }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Georgia, "Times New Roman", serif; color:var(--ink); background:radial-gradient(circle at top left, rgba(15,118,110,.12), transparent 30%), radial-gradient(circle at top right, rgba(180,83,9,.10), transparent 30%), linear-gradient(180deg,#f8f2e5 0%, #efe4cf 100%); }
+    .wrap { max-width: 1150px; margin:0 auto; padding:30px 18px 60px; }
+    .hero, .section, .navcard { background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); }
+    .hero { padding:30px; margin-bottom:18px; }
+    .navcard { padding:14px 18px; margin-bottom:18px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; }
+    .navlinks { display:flex; flex-wrap:wrap; gap:10px; }
+    a.btn { display:inline-block; padding:10px 14px; border-radius:999px; text-decoration:none; color:white; background:var(--teal); }
+    a.btn.alt { background:var(--rust); }
+    h1,h2,h3 { line-height:1.12; margin:0 0 10px; }
+    h1 { font-size:clamp(2rem, 4vw, 3.2rem); letter-spacing:-.03em; }
+    h2 { font-size:1.65rem; margin-bottom:14px; }
+    h3 { font-size:1.1rem; margin-top:18px; }
+    p { line-height:1.6; }
+    .lead { color:var(--muted); max-width:880px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+    .section { padding:22px; margin-bottom:18px; }
+    .tagrow { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+    .tag { padding:8px 12px; border-radius:999px; background:#f2ead6; border:1px solid var(--line); font-size:.95rem; }
+    ul { margin:8px 0 0 18px; line-height:1.6; }
+    li { margin:4px 0; }
+    .formula { padding:12px 14px; border-radius:14px; border:1px solid var(--line); background:#faf3e4; overflow:auto; font-family:"Courier New", monospace; white-space:pre-wrap; }
+    .callout { padding:14px 16px; border-left:5px solid var(--rust); background:#fff6e8; border-radius:12px; margin-top:14px; }
+    .mini { color:var(--muted); font-size:.95rem; }
+    @media (max-width: 720px) { .navcard { align-items:flex-start; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Into ML - Theory Review</h1>
+      <p class="lead">This page is the study-first companion to your practice exam. It focuses on the theory, definitions, formulas, distinctions, and lecture-specific ideas most likely to show up as multiple-choice questions.</p>
+      <div class="tagrow">
+        <div class="tag">Modules 1-8</div>
+        <div class="tag">Lecture-based emphasis</div>
+        <div class="tag">Formula reminders</div>
+        <div class="tag">Exam traps called out</div>
+      </div>
+    </section>
+
+    <section class="navcard">
+      <div>
+        <strong>Study Navigation</strong>
+        <div class="mini">Use this page for theory review, then switch to the exam page to test yourself.</div>
+      </div>
+      <div class="navlinks">
+        <a class="btn" href="./ml_midterm_practice_exam.html">Open Practice Exam</a>
+        <a class="btn alt" href="./index.html">Open Home Page</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Module 1: Core Concepts</h2>
+      <h3>Mitchell definition</h3>
+      <div class="formula">A program learns from experience E with respect to task T and performance measure P if its performance at T, as measured by P, improves with E.</div>
+      <ul>
+        <li>`T`, `E`, and `P` are required in the definition.</li>
+        <li>A particular model `H` is not required by the definition itself.</li>
+        <li>Supervised learning uses labeled data; unsupervised learning uses unlabeled data.</li>
+        <li>Online learning updates incrementally; batch learning trains on the full available set.</li>
+        <li>Model-based learning fits parameters; instance-based learning compares to stored examples.</li>
+      </ul>
+      <div class="callout">Most likely trap: �Which item is not required in the definition of machine learning?� The answer is usually `Model H`.</div>
+    </section>
+
+    <section class="section">
+      <h2>Module 2: Linear Regression</h2>
+      <h3>Core model</h3>
+      <div class="formula">y-hat = w0 + w1x1 + ... + wnxn</div>
+      <h3>Key formulas</h3>
+      <div class="formula">MSE = (1/m) * Sum[(y-hat(i) - y(i))^2]
+Normal equation: w = (X^T X)^(-1) X^T y
+Single-sample GD update: wj <- wj - alpha * 2(y-hat - y)xj</div>
+      <ul>
+        <li>Linear regression has a closed-form solution; logistic regression does not.</li>
+        <li>If learning rate is too large, GD may oscillate or diverge.</li>
+        <li>Lasso can drive coefficients to zero; Ridge usually shrinks them without zeroing them.</li>
+        <li>MAE is more robust to outliers than MSE/RMSE.</li>
+      </ul>
+      <div class="callout">Most likely trap: more training iterations do not automatically solve overfitting.</div>
+    </section>
+
+    <section class="grid">
+      <section class="section">
+        <h2>Module 3: Logistic Regression</h2>
+        <div class="formula">P(y=1|x) = sigma(w^T x)
+sigma(x) = 1 / (1 + e^(-x))
+sigma'(x) = sigma(x)(1 - sigma(x))</div>
+        <ul>
+          <li>Binary classification model that predicts a probability-like output.</li>
+          <li>Standard loss is cross-entropy / log loss.</li>
+          <li>With cross-entropy, the optimization is convex in the standard setup.</li>
+          <li>No normal-equation-style closed-form solution.</li>
+        </ul>
+      </section>
+      <section class="section">
+        <h2>Module 3: Evaluation</h2>
+        <div class="formula">Precision = TP / (TP + FP)
+Recall = TP / (TP + FN)
+F1 = 2TP / (2TP + FP + FN)
+TPR = TP / (TP + FN)
+FPR = FP / (FP + TN)</div>
+        <ul>
+          <li>ROC plots TPR vs FPR.</li>
+          <li>ROC close to the diagonal means weak or random-like performance.</li>
+          <li>Accuracy can be misleading on imbalanced datasets.</li>
+          <li>One-vs-rest is a standard multiclass extension.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="section">
+      <h2>Module 4: Decision Trees</h2>
+      <ul>
+        <li>Trees are hierarchical rule structures.</li>
+        <li>Classification tree: discrete targets. Regression tree: continuous targets.</li>
+        <li>Training is greedy.</li>
+        <li>ID3 uses information gain.</li>
+        <li>CART uses Gini impurity.</li>
+      </ul>
+      <div class="formula">Entropy(S) = - Sum[p_i log2 p_i]
+IG(S,A) = Entropy(S) - Sum_v (|S_v|/|S|) Entropy(S_v)
+Gini = 1 - Sum[p_k^2]</div>
+      <ul>
+        <li>Reduced error pruning uses validation performance.</li>
+        <li>Chi-squared pruning tests whether a split is statistically meaningful.</li>
+      </ul>
+      <div class="callout">Most likely trap: decision trees are not only for classification. They are also used for regression.</div>
+    </section>
+
+    <section class="grid">
+      <section class="section">
+        <h2>Module 5: Bias, Variance, Cross-Validation</h2>
+        <div class="formula">Expected test error � Bias^2 + Variance + irreducible noise</div>
+        <ul>
+          <li>High bias means underfitting.</li>
+          <li>High variance means overfitting.</li>
+          <li>K-fold cross-validation is used for model and hyperparameter selection.</li>
+          <li>After tuning, retrain on all training data and test once on the held-out test set.</li>
+        </ul>
+      </section>
+      <section class="section">
+        <h2>Module 5: Ensembles</h2>
+        <ul>
+          <li>Bagging: sampling with replacement.</li>
+          <li>Pasting: sampling without replacement.</li>
+          <li>Boosting: sequentially corrects earlier mistakes.</li>
+          <li>Stacking: uses a separate learned model to combine base learners.</li>
+          <li>Bagging helps reduce variance for unstable learners like trees.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="grid">
+      <section class="section">
+        <h2>Module 6: SVM</h2>
+        <ul>
+          <li>SVM finds an optimal separating hyperplane with maximum margin.</li>
+          <li>Support vectors are the points nearest the boundary.</li>
+          <li>Kernel functions allow nonlinear separation.</li>
+          <li>The lecture emphasizes quadratic optimization and the avoidance of poor local minima.</li>
+          <li>SVR is the regression version of SVM.</li>
+        </ul>
+      </section>
+      <section class="section">
+        <h2>Module 7: Bayesian Learning</h2>
+        <div class="formula">P(A|B) = P(B|A)P(A) / P(B)</div>
+        <ul>
+          <li>If P(A|B) = P(A), then A and B are independent and P(AB) = P(A)P(B).</li>
+          <li>MAP picks the hypothesis with highest posterior probability.</li>
+          <li>Bayes optimal classifier uses all hypotheses weighted by posterior probability.</li>
+          <li>Naive Bayes assumes conditional independence given the class.</li>
+          <li>Gibbs is worth memorizing as a separate algorithm with its expected-error guarantee.</li>
+        </ul>
+      </section>
+    </section>
+
+    <section class="section">
+      <h2>Module 8: Neural Networks</h2>
+      <ul>
+        <li>Perceptron is the classic single-layer neural model.</li>
+        <li>Backpropagation is the standard multilayer training method.</li>
+        <li>Sigmoid is a smooth differentiable threshold-like activation.</li>
+        <li>Binary classification often uses sigmoid; multiclass often uses softmax.</li>
+        <li>Regression and classification networks usually use different loss functions.</li>
+        <li>A single-layer perceptron cannot solve XOR.</li>
+      </ul>
+      <div class="formula">g(x) = 1 / (1 + e^(-x))
+g'(x) = g(x)(1 - g(x))</div>
+      <div class="callout">Most likely trap: �Which statement about sigmoid is NOT true?� In your quiz set, the correct answer was �None of the above� because all listed statements were true.</div>
+    </section>
+
+    <section class="section">
+      <h2>Fast Cram Checklist</h2>
+      <div class="grid">
+        <div>
+          <h3>Know cold</h3>
+          <ul>
+            <li>MSE, normal equation, sigmoid derivative</li>
+            <li>precision, recall, F1, TPR, FPR</li>
+            <li>entropy, information gain, Gini</li>
+            <li>Bayes theorem and independence</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Common comparisons</h3>
+          <ul>
+            <li>linear vs logistic regression</li>
+            <li>bagging vs pasting vs boosting vs stacking</li>
+            <li>bias vs variance</li>
+            <li>ID3 vs CART</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Likely traps</h3>
+          <ul>
+            <li>accuracy on imbalanced data</li>
+            <li>decision trees only for classification</li>
+            <li>logistic regression normal equation</li>
+            <li>more iterations always fix overfitting</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
